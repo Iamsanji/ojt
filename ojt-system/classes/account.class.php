@@ -1,15 +1,15 @@
 <?php
 
-    require_once 'config/database.php';
+    require_once(__DIR__ . '/../database.php');
 
     class Account {
-        public $id = '';
-        public $fname = '';
-        public $lname = '';
-        public $mname = '';
-        public $password = '';
-        public $email = '';
-        public $role = '';
+        public $id = '1';
+        public $fname = 'josh';
+        public $lname = 'mendoza';
+        public $mname = 'abil';
+        public $password = 'mendoza123';
+        public $email = 'admin';
+        public $role = 'admin';
 
     
 
@@ -59,6 +59,39 @@
 
     }
 
+    function login($email, $password){
+        $sql = "SELECT * FROM accounts WHERE email = :email LIMIT 1;";
+        $query = $this->connection->prepare($sql); // use $this->connection, already set in __construct
+    
+        $query->bindParam(':email', $email);
+    
+        if ($query->execute()) {
+            $data = $query->fetch(PDO::FETCH_ASSOC);
+            if ($data && $password === $data['password']) { // plain text comparison
+                return true;
+            }
+        }
+    
+        return false;
+    }
+    
+    function fetch($email){
+        $sql = "SELECT * FROM accounts WHERE email = :email LIMIT 1;";
+        $query = $this->db->connect()->prepare($sql);
+
+        $query->bindParam(':email', $email);
+        $data = null;
+        if($query->execute()){
+            $data = $query->fetch();
+        }
+
+        return $data;
+    }
+
 }
 
+
+// $obj = new Account();
+
+// $obj->add();
 ?>
